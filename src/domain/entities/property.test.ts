@@ -1,3 +1,4 @@
+import { DateRange } from "./../value_objects/date_range";
 import { Property } from "./property";
 describe("Property Entity", () => {
   it("Deve criar uma instancia de propriedade com todos os atributos", () => {
@@ -55,5 +56,21 @@ describe("Property Entity", () => {
         0
       );
     }).toThrow("O preço base por noite deve ser maior que 0");
+  });
+
+  it("nao deve aplicar desconto para estadias menores que 7 noites", () => {
+    const property = new Property(
+      "1",
+      "Casa com 3 quartos",
+      "Casa com 3 quartos, 2 banheiros e 1 vaga na garagem",
+      6,
+      100
+    );
+    const dateRange = new DateRange(
+      new Date("2021-01-01"),
+      new Date("2021-01-05")
+    );
+    const totalPrice = property.calculateTotalPrice(dateRange);
+    expect(totalPrice).toBe(400);
   });
 });

@@ -1,3 +1,5 @@
+import { DateRange } from "../value_objects/date_range";
+
 export class Property {
   constructor(
     private readonly id: string,
@@ -55,5 +57,11 @@ export class Property {
 
   getBasePricePerNight(): number {
     return this.basePricePerNight;
+  }
+
+  calculateTotalPrice(dateRange: DateRange): number {
+    const totalNights = dateRange.getTotalNights();
+    let totalPrice = totalNights * this.basePricePerNight;
+    return totalPrice;
   }
 }
