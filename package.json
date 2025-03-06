@@ -1,0 +1,26 @@
+{
+  "name": "fullcycle-4.0-tdd",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GabrielMessiasdaRosa/fullcycle-4.0-TDD.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GabrielMessiasdaRosa/fullcycle-4.0-TDD/issues"
+  },
+  "homepage": "https://github.com/GabrielMessiasdaRosa/fullcycle-4.0-TDD#readme",
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.6",
+    "typescript": "^5.8.2"
+  }
+}
