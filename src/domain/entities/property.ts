@@ -62,6 +62,10 @@ export class Property {
   calculateTotalPrice(dateRange: DateRange): number {
     const totalNights = dateRange.getTotalNights();
     let totalPrice = totalNights * this.basePricePerNight;
+
+    if (totalNights >= 7) {
+      totalPrice *= 0.9;
+    }
     return totalPrice;
   }
 }

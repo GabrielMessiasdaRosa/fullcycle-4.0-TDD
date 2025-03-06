@@ -73,4 +73,20 @@ describe("Property Entity", () => {
     const totalPrice = property.calculateTotalPrice(dateRange);
     expect(totalPrice).toBe(400);
   });
+
+  it("deve aplicar desconto de 10% para estadias de 7 ou mais noites", () => {
+    const property = new Property(
+      "1",
+      "Casa com 3 quartos",
+      "Casa com 3 quartos, 2 banheiros e 1 vaga na garagem",
+      6,
+      100
+    );
+    const dateRange = new DateRange(
+      new Date("2021-01-01"),
+      new Date("2021-01-08")
+    );
+    const totalPrice = property.calculateTotalPrice(dateRange);
+    expect(totalPrice).toBe(630);
+  });
 });
