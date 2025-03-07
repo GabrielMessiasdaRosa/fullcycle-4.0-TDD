@@ -11,7 +11,7 @@ export class Booking {
     private readonly numberOfGuests: number,
     private readonly status: "CONFIRMED" | "CANCELLED" = "CONFIRMED"
   ) {
-    this.validateBooking(property, dateRange);
+    this.validateBooking(property, dateRange, numberOfGuests);
     this.id = id;
     this.property = property;
     this.user = user;
@@ -20,7 +20,11 @@ export class Booking {
 
     property.addBooking(this);
   }
-  private validateBooking(property: Property, dateRange: DateRange): void {
+  private validateBooking(
+    property: Property,
+    dateRange: DateRange,
+    numberOfGuests: number
+  ): void {
     const bookings = property.getBookings();
     const booking = bookings.find((booking) =>
       booking.getDateRange().overlaps(dateRange)
@@ -29,6 +33,14 @@ export class Booking {
       throw new Error(
         "Imóvel indisponível. Já existe uma reserva confirmada para este imóvel neste período"
       );
+    }
+
+    if (numberOfGuests < 1) {
+      throw new Error("Número de hóspedes inválido");
+    }
+
+    if (numberOfGuests > property.getMaxGuests()) {
+      throw new Error("Número de hóspedes excede a capacidade do imóvel");
     }
   }
 
