@@ -33,7 +33,24 @@ describe("DateRange Value Object", () => {
     );
 
     const overlaps = dateRange1.overlaps(dateRange2);
-    expect(overlaps).toBe(true);
+    expect(overlaps).toBe("UNAVAILABLE");
+  });
+
+  it("deve verificar se dois intervalos de datas não se sobrepõem", () => {
+    const dateRange1 = new DateRange(
+      new Date("2020-01-01"),
+      new Date("2020-01-31")
+    );
+    const dateRange2 = new DateRange(
+      new Date("2020-02-01"),
+      new Date("2020-02-15")
+    );
+
+    const overlaps = dateRange1.overlaps(dateRange2);
+    expect(overlaps).toBe("AVAILABLE");
+
+    const overlaps2 = dateRange2.overlaps(dateRange1);
+    expect(overlaps2).toBe("AVAILABLE");
   });
 
   it("deve verificar se a data de inicio é igual a data de termino", () => {

@@ -36,10 +36,14 @@ export class DateRange {
     return diffDays;
   }
 
-  overlaps(dateRange: DateRange): boolean {
-    return (
-      this.startDate <= dateRange.getEndDate() &&
-      this.endDate >= dateRange.getStartDate()
-    );
+  overlaps(dateRange: DateRange): "AVAILABLE" | "UNAVAILABLE" {
+    const startDate = dateRange.getStartDate();
+    const endDate = dateRange.getEndDate();
+
+    if (this.startDate >= endDate || this.endDate <= startDate) {
+      return "AVAILABLE";
+    }
+
+    return "UNAVAILABLE";
   }
 }
