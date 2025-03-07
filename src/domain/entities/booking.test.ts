@@ -25,5 +25,6 @@ describe("Booking Entity", () => {
     expect(booking.getUser()).toBe(user);
     expect(booking.getDateRange()).toBe(dateRange);
     expect(booking.getNumberOfGuests()).toBe(2);
+    expect(booking.getStatus()).toBe("CONFIRMED");
   });
 });
