@@ -46,4 +46,10 @@ export class DateRange {
 
     return "UNAVAILABLE";
   }
+
+  getDaysUntil(fromDate: Date): number {
+    const diffTime = Math.abs(this.startDate.getTime() - fromDate.getTime());
+    const diffDays = Math.ceil(diffTime / ONE_DAY);
+    return diffDays;
+  }
 }

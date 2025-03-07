@@ -3,21 +3,23 @@ import { Property } from "./property";
 import { User } from "./user";
 
 export class Booking {
+  private totalPrice: number;
   constructor(
     private readonly id: string,
     private readonly property: Property,
     private readonly user: User,
     private readonly dateRange: DateRange,
     private readonly numberOfGuests: number,
-    private readonly status: "CONFIRMED" | "CANCELLED" = "CONFIRMED"
+    private status: "CONFIRMED" | "CANCELLED" = "CONFIRMED"
   ) {
     this.validateBooking(property, dateRange, numberOfGuests);
+
     this.id = id;
     this.property = property;
     this.user = user;
     this.dateRange = dateRange;
     this.numberOfGuests = numberOfGuests;
-
+    this.totalPrice = property.calculateTotalPrice(dateRange);
     property.addBooking(this);
   }
   private validateBooking(
@@ -66,5 +68,36 @@ export class Booking {
 
   getStatus(): "CONFIRMED" | "CANCELLED" {
     return this.status;
+  }
+
+  getTotalPrice(): number {
+    return this.totalPrice;
+  }
+
+  cancel(currentDate: Date): void {
+    const daysBeforeCheckIn = this.dateRange.getDaysUntil(currentDate);
+
+    if (this.status === "CANCELLED") {
+      throw new Error("Reserva já cancelada");
+    }
+
+    if (daysBeforeCheckIn <= 1) {
+      this.status = "CANCELLED";
+      return;
+    }
+
+    if (daysBeforeCheckIn <= 3) {
+      this.status = "CANCELLED";
+      this.totalPrice = this.totalPrice * 0.5;
+      return;
+    }
+
+    if (daysBeforeCheckIn > 3) {
+      this.status = "CANCELLED";
+      this.totalPrice = 0;
+      return;
+    }
+
+    this.status = "CANCELLED";
   }
 }

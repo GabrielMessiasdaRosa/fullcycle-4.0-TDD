@@ -59,4 +59,12 @@ describe("DateRange Value Object", () => {
       new DateRange(date, date);
     }).toThrow("A data de término deve ser posterior a data de início");
   });
+
+  it("deve verificar quantos dias faltam para a data de inicio", () => {
+    const startDate = new Date("2020-01-01");
+    const endDate = new Date("2020-01-31");
+    const dateRange = new DateRange(startDate, endDate);
+    const daysUntil = dateRange.getDaysUntil(new Date("2019-12-22"));
+    expect(daysUntil).toBe(10);
+  });
 });
