@@ -64,7 +64,7 @@ describe("DateRange Value Object", () => {
     const startDate = new Date("2020-01-01");
     const endDate = new Date("2020-01-31");
     const dateRange = new DateRange(startDate, endDate);
-    const daysUntil = dateRange.getDaysUntil(new Date("2019-12-22"));
+    const daysUntil = dateRange.getDaysUntilCheckIn(new Date("2019-12-22"));
     expect(daysUntil).toBe(10);
   });
 });

@@ -1,3 +1,4 @@
+import { RefundRuleFactory } from "../cancelation/refund_rule_factory";
 import { DateRange } from "../value_objects/date_range";
 import { Property } from "./property";
 import { User } from "./user";
@@ -75,29 +76,15 @@ export class Booking {
   }
 
   cancel(currentDate: Date): void {
-    const daysBeforeCheckIn = this.dateRange.getDaysUntil(currentDate);
+    const daysBeforeCheckIn = this.dateRange.getDaysUntilCheckIn(currentDate);
 
     if (this.status === "CANCELLED") {
       throw new Error("Reserva já cancelada");
     }
 
-    if (daysBeforeCheckIn <= 1) {
-      this.status = "CANCELLED";
-      return;
-    }
+    const refundRule = RefundRuleFactory.getRefundRule(daysBeforeCheckIn);
 
-    if (daysBeforeCheckIn <= 3) {
-      this.status = "CANCELLED";
-      this.totalPrice = this.totalPrice * 0.5;
-      return;
-    }
-
-    if (daysBeforeCheckIn > 3) {
-      this.status = "CANCELLED";
-      this.totalPrice = 0;
-      return;
-    }
-
+    this.totalPrice = refundRule.calculateRefund(this.totalPrice);
     this.status = "CANCELLED";
   }
 }
