@@ -1,14 +1,13 @@
 import { User } from "../domain/entities/user";
-import { UserType } from "../types/user_type";
 
 export class MockUserRepository {
-  private users: UserType[] = [];
+  private users: User[] = [];
 
-  async getUsers(): Promise<UserType[]> {
+  async getUsers(): Promise<User[]> {
     return this.users;
   }
 
-  async getUserById(id: string): Promise<UserType | null> {
+  async getUserById(id: string): Promise<User | null> {
     const user = this.users.find((user) => user.id === id);
     if (!user?.id) {
       return null;
@@ -16,14 +15,16 @@ export class MockUserRepository {
     return user;
   }
 
-  async addUser(user: UserType): Promise<void> {
-    const newUser = new User(user.id, user.name) as UserType;
-    this.users.push(newUser);
+  async addUser(user: User): Promise<void> {
+    this.users.push(user);
   }
 
-  async updateUser(user: UserType): Promise<void> {
-    const index = this.users.findIndex((u) => u.id === user.id);
-    this.users[index] = user;
+  async updateUser(data: { id: string; name: string }): Promise<void> {
+    this.users.map((user) => {
+      if (user.id === data.id) {
+        user.name = data.name;
+      }
+    });
   }
 
   async deleteUser(id: string): Promise<void> {

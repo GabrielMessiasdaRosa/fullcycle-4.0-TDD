@@ -83,7 +83,6 @@ export class Booking {
     }
 
     const refundRule = RefundRuleFactory.getRefundRule(daysBeforeCheckIn);
-
     this.totalPrice = refundRule.calculateRefund(this.totalPrice);
     this.status = "CANCELLED";
   }

@@ -1,6 +1,6 @@
 export class User {
   readonly id: string;
-  readonly name: string;
+  name: string;
   constructor(id: string, name: string) {
     this.validations(id, name);
     this.id = id;

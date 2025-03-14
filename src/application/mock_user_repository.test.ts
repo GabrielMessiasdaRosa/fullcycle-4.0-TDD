@@ -1,4 +1,4 @@
-import { UserType } from "../types/user_type";
+import { User } from "../domain/entities/user";
 import { MockUserRepository } from "./mock_user_repository";
 
 describe("MockUserRepository", () => {
@@ -11,33 +11,22 @@ describe("MockUserRepository", () => {
     expect(user).toBeNull();
   });
   it("deve adicionar um novo usuário", async () => {
-    const user = {
-      id: "1",
-      name: "John Doe",
-    };
+    const user = new User("1", "John Doe");
     await userRepository.addUser(user);
     const userFound = await userRepository.getUserById("1");
     expect(userFound).toEqual(user);
   });
   it("Deve retornar um usuário se o id for encontrado", async () => {
-    const user: UserType = {
-      id: "1",
-      name: "John Doe",
-    };
+    const user = new User("1", "John Doe");
     userRepository.addUser(user);
     const userFound = await userRepository.getUserById("1");
     expect(userFound).toEqual(user);
   });
 
   it("Deve retornar uma lista de usuários", async () => {
-    const user = {
-      id: "1",
-      name: "John Doe",
-    };
-    const user2 = {
-      id: "2",
-      name: "Jane Doe",
-    };
+    const user = new User("1", "John Doe");
+    const user2 = new User("2", "Jane Doe");
+
     await userRepository.addUser(user);
     await userRepository.addUser(user2);
     const users = await userRepository.getUsers();
@@ -50,24 +39,20 @@ describe("MockUserRepository", () => {
   });
 
   it("deve atualizar um usuário", async () => {
-    const user = {
-      id: "1",
-      name: "John Doe",
-    };
+    const user = new User("1", "John Doe");
+
     await userRepository.addUser(user);
-    const userUpdated = {
+    const payload = {
       id: "1",
       name: "Jane Doe",
     };
-    await userRepository.updateUser(userUpdated);
+    await userRepository.updateUser(payload);
     const userFound = await userRepository.getUserById("1");
-    expect(userFound).toEqual(userUpdated);
+    expect(userFound?.getId()).toBe("1");
+    expect(userFound?.getName()).toBe("Jane Doe");
   });
   it("deve deletar um usuário", async () => {
-    const user = {
-      id: "1",
-      name: "John Doe",
-    };
+    const user = new User("1", "John Doe");
     await userRepository.addUser(user);
     await userRepository.deleteUser("1");
     const userFound = await userRepository.getUserById("1");

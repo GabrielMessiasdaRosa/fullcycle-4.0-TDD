@@ -5,7 +5,11 @@ import { RefundRule } from "./refund_rule.interface";
 
 export class RefundRuleFactory {
   static getRefundRule(daysBeforeCheckIn: number): RefundRule {
-    if (daysBeforeCheckIn <= 1) {
+    if (daysBeforeCheckIn <= 1 && daysBeforeCheckIn >= 0) {
+      return new NoRefund();
+    }
+
+    if (daysBeforeCheckIn < 0) {
       return new NoRefund();
     }
 
@@ -17,6 +21,6 @@ export class RefundRuleFactory {
       return new FullRefund();
     }
 
-    return new NoRefund();
+    throw new Error("Invalid daysBeforeCheckIn");
   }
 }

@@ -33,9 +33,10 @@ describe("UserService", () => {
       id: "1",
       name: "John Doe",
     };
-    UserRepositoryMock.addUser(user);
+    await userService.addUser(user);
     const userFound = await UserRepositoryMock.getUserById("1");
-    expect(userFound).toEqual(user);
+    expect(userFound?.getId()).toBe("1");
+    expect(userFound?.getName()).toBe("John Doe");
   });
 
   it("Deve adicionar um novo usuário", async () => {
@@ -45,7 +46,8 @@ describe("UserService", () => {
     };
     await userService.addUser(user);
     const userFound = await userService.getUserById("1");
-    expect(userFound).toEqual(user);
+    expect(userFound?.getId()).toBe("1");
+    expect(userFound?.getName()).toBe("John Doe");
   });
 
   it("Deve atualizar um usuário", async () => {
