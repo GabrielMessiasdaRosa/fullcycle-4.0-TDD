@@ -20,7 +20,7 @@ export class MockUserRepository {
   }
 
   async updateUser(data: { id: string; name: string }): Promise<void> {
-    this.users.map((user) => {
+    this.users.forEach((user) => {
       if (user.id === data.id) {
         user.name = data.name;
       }
