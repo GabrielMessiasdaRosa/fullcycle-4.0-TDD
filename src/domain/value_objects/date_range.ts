@@ -1,8 +1,8 @@
 const ONE_DAY = 1000 * 60 * 60 * 24;
 
 export class DateRange {
-  private startDate: Date;
-  private endDate: Date;
+  private readonly startDate: Date;
+  private readonly endDate: Date;
 
   constructor(startDate: Date, endDate: Date) {
     this.validateDates(startDate, endDate);
