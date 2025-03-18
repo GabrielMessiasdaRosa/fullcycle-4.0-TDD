@@ -1,6 +1,7 @@
 import { User } from "../domain/entities/user";
+import { UserRepository } from "../domain/repositories/user_repository";
 
-export class MockUserRepository {
+export class MockUserRepository implements UserRepository {
   private users: User[] = [];
 
   async getUsers(): Promise<User[]> {
