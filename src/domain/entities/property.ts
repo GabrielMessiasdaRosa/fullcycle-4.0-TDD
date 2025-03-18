@@ -2,13 +2,18 @@ import { DateRange } from "../value_objects/date_range";
 import { Booking } from "./booking";
 
 export class Property {
+  readonly id: string;
+  title: string;
+  description: string;
+  maxGuests: number;
+  basePricePerNight: number;
+  bookings: Booking[] = [];
   constructor(
-    private readonly id: string,
-    private readonly title: string,
-    private readonly description: string,
-    private readonly maxGuests: number,
-    private readonly basePricePerNight: number,
-    private readonly bookings: Booking[] = []
+    id: string,
+    title: string,
+    description: string,
+    maxGuests: number,
+    basePricePerNight: number
   ) {
     this.validateProperty(title, description, maxGuests, basePricePerNight);
     this.id = id;
@@ -16,7 +21,7 @@ export class Property {
     this.description = description;
     this.maxGuests = maxGuests;
     this.basePricePerNight = basePricePerNight;
-    this.bookings = bookings;
+    this.bookings = [];
   }
 
   private validateProperty(
