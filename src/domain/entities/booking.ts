@@ -1,4 +1,4 @@
-import { RefundRuleFactory } from "../cancelation/refund_rule_factory";
+import { RefundRuleFactory } from "../factories/cancelation/refund_rule_factory";
 import { DateRange } from "../value_objects/date_range";
 import { Property } from "./property";
 import { User } from "./user";
