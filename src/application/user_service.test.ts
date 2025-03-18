@@ -1,4 +1,4 @@
-import { MockUserRepository } from "./mock_user_repository";
+import { MockUserRepository } from "../infra/mock_user_repository";
 import { UserService } from "./user_service";
 describe("UserService", () => {
   let UserRepositoryMock: MockUserRepository;

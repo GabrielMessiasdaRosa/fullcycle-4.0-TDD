@@ -1,5 +1,5 @@
 import { User } from "../domain/entities/user";
-import { MockUserRepository } from "./mock_user_repository";
+import { MockUserRepository } from "../infra/mock_user_repository";
 
 export class UserService {
   constructor(private readonly userRepository: MockUserRepository) {
