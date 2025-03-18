@@ -2,10 +2,7 @@ import { Property } from "../domain/entities/property";
 import { PropertyRepository } from "../domain/repositories/property_repository";
 
 export class MockPropertyRepository implements PropertyRepository {
-  private properties: Property[];
-  constructor() {
-    this.properties = [];
-  }
+  private properties: Property[] = [];
 
   async getProperties(): Promise<Property[]> {
     return this.properties;
