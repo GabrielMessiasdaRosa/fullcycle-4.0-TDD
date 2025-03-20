@@ -1,4 +1,5 @@
 import { MockUserRepository } from "../../infra/mock_user_repository";
+import { CreateUserDTO } from "../dtos/user/create_user_dto";
 import { UserService } from "./user_service";
 describe("UserService", () => {
   let UserRepositoryMock: MockUserRepository;
@@ -14,12 +15,10 @@ describe("UserService", () => {
   });
 
   it("Deve retornar uma lista de usuários", async () => {
-    const user = {
-      id: "1",
+    const user: CreateUserDTO = {
       name: "John Doe",
     };
-    const user2 = {
-      id: "2",
+    const user2: CreateUserDTO = {
       name: "Jane Doe",
     };
     const userRes1 = await userService.addUser(user);
@@ -41,7 +40,7 @@ describe("UserService", () => {
   });
 
   it("Deve retornar um usuário se o id for encontrado", async () => {
-    const user = {
+    const user: CreateUserDTO = {
       name: "John Doe",
     };
 
@@ -51,7 +50,7 @@ describe("UserService", () => {
   });
 
   it("Deve adicionar um novo usuário", async () => {
-    const user = {
+    const user: CreateUserDTO = {
       name: "John Doe",
     };
     const userRes = await userService.addUser(user);
@@ -60,7 +59,7 @@ describe("UserService", () => {
   });
 
   it("Deve atualizar um usuário", async () => {
-    const user = {
+    const user: CreateUserDTO = {
       name: "John Doe",
     };
     const userRes = await userService.addUser(user);
@@ -75,11 +74,11 @@ describe("UserService", () => {
   });
 
   it("Deve deletar um usuário", async () => {
-    const user = {
+    const user: CreateUserDTO = {
       name: "John Doe",
     };
     const userRes = await userService.addUser(user);
-    await userService.deleteUser(userRes.id);
+    await userService.deleteUser({ id: userRes.id });
     const users = await userService.getUsers();
     expect(users).toHaveLength(0);
   });
