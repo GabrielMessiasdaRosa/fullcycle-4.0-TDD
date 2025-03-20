@@ -4,45 +4,51 @@ import { Property } from "./property";
 import { User } from "./user";
 
 export class Booking {
-  private totalPrice: number;
+  readonly id: string;
+  property: Property;
+  user: User;
+  dateRange: DateRange;
+  guestCount: number;
+  totalPrice: number;
+  status: "CONFIRMED" | "CANCELLED" = "CONFIRMED";
+
   constructor(
-    private readonly id: string,
-    private readonly property: Property,
-    private readonly user: User,
-    private readonly dateRange: DateRange,
-    private readonly numberOfGuests: number,
-    private status: "CONFIRMED" | "CANCELLED" = "CONFIRMED"
+    id: string,
+    property: Property,
+    user: User,
+    dateRange: DateRange,
+    guestCount: number
   ) {
-    this.validateBooking(property, dateRange, numberOfGuests);
+    this.validateBooking(property, dateRange, guestCount);
 
     this.id = id;
     this.property = property;
     this.user = user;
     this.dateRange = dateRange;
-    this.numberOfGuests = numberOfGuests;
+    this.guestCount = guestCount;
     this.totalPrice = property.calculateTotalPrice(dateRange);
     property.addBooking(this);
   }
   private validateBooking(
     property: Property,
     dateRange: DateRange,
-    numberOfGuests: number
+    guestCount: number
   ): void {
-    const bookings = property.getBookings();
-    const booking = bookings.find((booking) =>
-      booking.getDateRange().overlaps(dateRange)
-    );
-    if (booking && booking.getStatus() === "CONFIRMED") {
-      throw new Error(
-        "Imóvel indisponível. Já existe uma reserva confirmada para este imóvel neste período"
-      );
+    const currentBookings = property.getBookings();
+
+    for (const booking of currentBookings) {
+      if (dateRange.overlaps(booking.getDateRange()) === "UNAVAILABLE") {
+        throw new Error(
+          "Imóvel indisponível. Já existe uma reserva confirmada para este imóvel neste período"
+        );
+      }
     }
 
-    if (numberOfGuests < 1) {
+    if (guestCount < 1) {
       throw new Error("Número de hóspedes inválido");
     }
 
-    if (numberOfGuests > property.getMaxGuests()) {
+    if (guestCount > property.getMaxGuests()) {
       throw new Error("Número de hóspedes excede a capacidade do imóvel");
     }
   }
@@ -63,8 +69,8 @@ export class Booking {
     return this.dateRange;
   }
 
-  getNumberOfGuests(): number {
-    return this.numberOfGuests;
+  getguestCount(): number {
+    return this.guestCount;
   }
 
   getStatus(): "CONFIRMED" | "CANCELLED" {

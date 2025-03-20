@@ -1,6 +1,7 @@
-import { Property } from "../../domain/entities/property";
+import { v4 as uuidv4 } from "uuid";
 import { PropertyRepository } from "../../domain/repositories/property_repository";
-
+import { CreatePropertyDTO } from "../dtos/property/create_property_dto";
+import { Property } from "./../../domain/entities/property";
 export class PropertyService {
   constructor(private readonly propertyRepository: PropertyRepository) {
     this.propertyRepository = propertyRepository;
@@ -16,18 +17,12 @@ export class PropertyService {
     return property;
   }
   async addProperty({
-    id,
     title,
     description,
     basePricePerNight,
     maxGuests,
-  }: {
-    id: string;
-    title: string;
-    description: string;
-    basePricePerNight: number;
-    maxGuests: number;
-  }): Promise<void> {
+  }: CreatePropertyDTO): Promise<Property> {
+    const id = uuidv4();
     const newProperty = new Property(
       id,
       title,
@@ -35,14 +30,17 @@ export class PropertyService {
       basePricePerNight,
       maxGuests
     );
-    await this.propertyRepository.addProperty(newProperty);
+    const response = await this.propertyRepository.addProperty(newProperty);
+    return response;
   }
 
-  async updateProperty(data: { id: string; title: string }): Promise<void> {
-    await this.propertyRepository.updateProperty(data);
+  async updateProperty(data: { id: string; title: string }): Promise<Property> {
+    const updatedProperty = await this.propertyRepository.updateProperty(data);
+    return updatedProperty;
   }
 
-  async deleteProperty(id: string): Promise<void> {
-    await this.propertyRepository.deleteProperty(id);
+  async deleteProperty(id: string): Promise<Property> {
+    const deletedProperty = await this.propertyRepository.deleteProperty(id);
+    return deletedProperty;
   }
 }

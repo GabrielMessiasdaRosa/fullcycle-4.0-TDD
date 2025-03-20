@@ -16,19 +16,22 @@ export class MockUserRepository implements UserRepository {
     return user;
   }
 
-  async addUser(user: User): Promise<void> {
+  async addUser(user: User): Promise<User> {
     this.users.push(user);
+    return user;
   }
 
-  async updateUser(data: { id: string; name: string }): Promise<void> {
+  async updateUser(data: { id: string; name: string }): Promise<User> {
     this.users.forEach((user) => {
       if (user.id === data.id) {
         user.name = data.name;
       }
     });
+    return this.users.find((user) => user.id === data.id) as User;
   }
 
-  async deleteUser(id: string): Promise<void> {
+  async deleteUser(id: string): Promise<User> {
     this.users = this.users.filter((user) => user.id !== id);
+    return this.users.find((user) => user.id === id) as User;
   }
 }

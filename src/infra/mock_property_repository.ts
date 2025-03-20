@@ -16,19 +16,24 @@ export class MockPropertyRepository implements PropertyRepository {
     return property;
   }
 
-  async addProperty(property: Property): Promise<void> {
+  async addProperty(property: Property): Promise<Property> {
     this.properties.push(property);
+    return property;
   }
 
-  async updateProperty(data: { id: string; title: string }): Promise<void> {
+  async updateProperty(data: { id: string; title: string }): Promise<Property> {
     this.properties.forEach((property) => {
       if (property.id === data.id) {
         property.title = data.title;
       }
     });
+    return this.properties.find(
+      (property) => property.id === data.id
+    ) as Property;
   }
 
-  async deleteProperty(id: string): Promise<void> {
+  async deleteProperty(id: string): Promise<Property> {
     this.properties = this.properties.filter((property) => property.id !== id);
+    return this.properties.find((property) => property.id === id) as Property;
   }
 }

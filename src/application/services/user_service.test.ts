@@ -22,57 +22,65 @@ describe("UserService", () => {
       id: "2",
       name: "Jane Doe",
     };
-    await userService.addUser(user);
-    await userService.addUser(user2);
+    const userRes1 = await userService.addUser(user);
+    const userRes2 = await userService.addUser(user2);
     const users = await userService.getUsers();
-    expect(users).toEqual([user, user2]);
+
+    expect(users).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: userRes1.id,
+          name: "John Doe",
+        }),
+        expect.objectContaining({
+          id: userRes2.id,
+          name: "Jane Doe",
+        }),
+      ])
+    );
   });
 
   it("Deve retornar um usuário se o id for encontrado", async () => {
     const user = {
-      id: "1",
       name: "John Doe",
     };
-    await userService.addUser(user);
-    const userFound = await UserRepositoryMock.getUserById("1");
-    expect(userFound?.getId()).toBe("1");
-    expect(userFound?.getName()).toBe("John Doe");
+
+    const userRes = await userService.addUser(user);
+    const userFound = await userService.getUserById(userRes.id);
+    expect(userFound).toEqual(userRes);
   });
 
   it("Deve adicionar um novo usuário", async () => {
     const user = {
-      id: "1",
       name: "John Doe",
     };
-    await userService.addUser(user);
-    const userFound = await userService.getUserById("1");
-    expect(userFound?.getId()).toBe("1");
-    expect(userFound?.getName()).toBe("John Doe");
+    const userRes = await userService.addUser(user);
+    const userFound = await userService.getUserById(userRes.id);
+    expect(userFound).toEqual(userRes);
   });
 
   it("Deve atualizar um usuário", async () => {
     const user = {
-      id: "1",
       name: "John Doe",
     };
-    await userService.addUser(user);
-    const userUpdated = {
-      id: "1",
-      name: "Jane Doe",
-    };
-    await userService.updateUser(userUpdated);
-    const userFound = await userService.getUserById("1");
-    expect(userFound).toEqual(userUpdated);
+    const userRes = await userService.addUser(user);
+    await userService.updateUser({ id: userRes.id, name: "Jane Doe" });
+    const userFound = await userService.getUserById(userRes.id);
+    expect(userFound).toEqual(
+      expect.objectContaining({
+        id: userRes.id,
+        name: "Jane Doe",
+      })
+    );
   });
 
   it("Deve deletar um usuário", async () => {
     const user = {
-      id: "1",
       name: "John Doe",
     };
-    await userService.addUser(user);
-    await userService.deleteUser("1");
-    const userFound = await userService.getUserById("1");
-    expect(userFound).toBeNull();
+    const userRes = await userService.addUser(user);
+    await userService.deleteUser(userRes.id);
+    const users = await userService.getUsers();
+    expect(users).toHaveLength(0);
   });
 });

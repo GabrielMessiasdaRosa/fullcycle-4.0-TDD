@@ -12,17 +12,16 @@ describe("PropertyService", () => {
 
   it("should create a new property", async () => {
     const property = {
-      id: "1",
       title: "Property 1",
       description: "Description 1",
       maxGuests: 1,
       basePricePerNight: 1,
     };
-    await propertyService.addProperty(property);
+    const createdProperty = await propertyService.addProperty(property);
     const properties = await propertyService.getProperties();
     expect(properties).toEqual([
       expect.objectContaining({
-        id: "1",
+        id: createdProperty.id, // Verifica o UUID gerado
         title: "Property 1",
         description: "Description 1",
         maxGuests: 1,
@@ -34,49 +33,48 @@ describe("PropertyService", () => {
 
   it("should update a property", async () => {
     const property = {
-      id: "1",
       title: "Property 1",
       description: "Description 1",
       maxGuests: 1,
       basePricePerNight: 1,
     };
-    await propertyService.addProperty(property);
+    const createdProperty = await propertyService.addProperty(property);
     await propertyService.updateProperty({
-      id: "1",
+      id: createdProperty.id,
       title: "Updated Property",
     });
-    const updatedProperty = await propertyService.getPropertyById("1");
+    const updatedProperty = await propertyService.getPropertyById(
+      createdProperty.id
+    );
     expect(updatedProperty?.title).toBe("Updated Property");
   });
 
   it("should delete a property", async () => {
     const property = {
-      id: "1",
       title: "Property 1",
-      description: "Description 1",
+      description: "Description 1333",
       maxGuests: 1,
       basePricePerNight: 1,
     };
-    await propertyService.addProperty(property);
-    await propertyService.deleteProperty("1");
+    const createdProperty = await propertyService.addProperty(property);
+    await propertyService.deleteProperty(createdProperty.id);
     const properties = await propertyService.getProperties();
     expect(properties).toHaveLength(0);
   });
 
   it("should get all properties", async () => {
     const property = {
-      id: "1",
       title: "Property 1",
       description: "Description 1",
       maxGuests: 1,
       basePricePerNight: 1,
     };
-    await propertyService.addProperty(property);
+    const createdProperty = await propertyService.addProperty(property);
     const properties = await propertyService.getProperties();
     expect(properties).toHaveLength(1);
     expect(properties[0]).toEqual(
       expect.objectContaining({
-        id: "1",
+        id: createdProperty.id, // Verifica o UUID gerado
         title: "Property 1",
         description: "Description 1",
         maxGuests: 1,
@@ -88,17 +86,18 @@ describe("PropertyService", () => {
 
   it("should get property by id", async () => {
     const property = {
-      id: "1",
       title: "Property 1",
       description: "Description 1",
       maxGuests: 1,
       basePricePerNight: 1,
     };
-    await propertyService.addProperty(property);
-    const foundProperty = await propertyService.getPropertyById("1");
+    const createdProperty = await propertyService.addProperty(property);
+    const foundProperty = await propertyService.getPropertyById(
+      createdProperty.id
+    );
     expect(foundProperty).toEqual(
       expect.objectContaining({
-        id: "1",
+        id: createdProperty.id, // Verifica o UUID gerado
         title: "Property 1",
         description: "Description 1",
         maxGuests: 1,
@@ -109,7 +108,9 @@ describe("PropertyService", () => {
   });
 
   it("should return null if property not found by id", async () => {
-    const foundProperty = await propertyService.getPropertyById("2");
+    const foundProperty = await propertyService.getPropertyById(
+      "non-existent-id"
+    );
     expect(foundProperty).toBeNull();
   });
 });
