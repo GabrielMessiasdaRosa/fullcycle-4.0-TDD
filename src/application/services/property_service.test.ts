@@ -91,8 +91,8 @@ describe("PropertyService", () => {
     const property: CreatePropertyDTO = {
       title: "Property 1",
       description: "Description 1",
-      maxGuests: 1,
       basePricePerNight: 1,
+      maxGuests: 1,
     };
     const createdProperty = await propertyService.addProperty(property);
     const foundProperty = await propertyService.getPropertyById(
