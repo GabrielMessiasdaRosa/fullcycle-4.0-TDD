@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { PropertyRepository } from "../../domain/repositories/property_repository";
 import { CreatePropertyDTO } from "../dtos/property/create_property_dto";
+import { DeletePropertyDTO } from "../dtos/property/delete_property_dto";
 import { Property } from "./../../domain/entities/property";
 export class PropertyService {
   constructor(private readonly propertyRepository: PropertyRepository) {
@@ -39,7 +40,7 @@ export class PropertyService {
     return updatedProperty;
   }
 
-  async deleteProperty(id: string): Promise<Property> {
+  async deleteProperty({ id }: DeletePropertyDTO): Promise<Property> {
     const deletedProperty = await this.propertyRepository.deleteProperty(id);
     return deletedProperty;
   }

@@ -1,3 +1,4 @@
+import { CreatePropertyDTO } from "../dtos/property/create_property_dto";
 import { MockPropertyRepository } from "./../../infra/mock_property_repository";
 import { PropertyService } from "./property_service";
 
@@ -11,7 +12,7 @@ describe("PropertyService", () => {
   });
 
   it("should create a new property", async () => {
-    const property = {
+    const property: CreatePropertyDTO = {
       title: "Property 1",
       description: "Description 1",
       maxGuests: 1,
@@ -32,7 +33,7 @@ describe("PropertyService", () => {
   });
 
   it("should update a property", async () => {
-    const property = {
+    const property: CreatePropertyDTO = {
       title: "Property 1",
       description: "Description 1",
       maxGuests: 1,
@@ -50,20 +51,22 @@ describe("PropertyService", () => {
   });
 
   it("should delete a property", async () => {
-    const property = {
+    const property: CreatePropertyDTO = {
       title: "Property 1",
       description: "Description 1333",
       maxGuests: 1,
       basePricePerNight: 1,
     };
     const createdProperty = await propertyService.addProperty(property);
-    await propertyService.deleteProperty(createdProperty.id);
+    await propertyService.deleteProperty({
+      id: createdProperty.id,
+    });
     const properties = await propertyService.getProperties();
     expect(properties).toHaveLength(0);
   });
 
   it("should get all properties", async () => {
-    const property = {
+    const property: CreatePropertyDTO = {
       title: "Property 1",
       description: "Description 1",
       maxGuests: 1,
@@ -85,7 +88,7 @@ describe("PropertyService", () => {
   });
 
   it("should get property by id", async () => {
-    const property = {
+    const property: CreatePropertyDTO = {
       title: "Property 1",
       description: "Description 1",
       maxGuests: 1,
@@ -108,9 +111,7 @@ describe("PropertyService", () => {
   });
 
   it("should return null if property not found by id", async () => {
-    const foundProperty = await propertyService.getPropertyById(
-      "non-existent-id"
-    );
+    const foundProperty = await propertyService.getPropertyById("invalid-id");
     expect(foundProperty).toBeNull();
   });
 });
