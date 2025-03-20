@@ -10,7 +10,7 @@ export class Booking {
   dateRange: DateRange;
   guestCount: number;
   totalPrice: number;
-  status: "CONFIRMED" | "CANCELLED" = "CONFIRMED";
+  status: "CONFIRMED" | "CANCELLED" | "COMPLETED" = "CONFIRMED";
 
   constructor(
     id: string,
@@ -73,7 +73,7 @@ export class Booking {
     return this.guestCount;
   }
 
-  getStatus(): "CONFIRMED" | "CANCELLED" {
+  getStatus(): "CONFIRMED" | "CANCELLED" | "COMPLETED" {
     return this.status;
   }
 
@@ -90,5 +90,13 @@ export class Booking {
     const refundRule = RefundRuleFactory.getRefundRule(daysBeforeCheckIn);
     this.totalPrice = refundRule.calculateRefund(this.totalPrice);
     this.status = "CANCELLED";
+  }
+
+  complete(): void {
+    if (this.status === "CANCELLED") {
+      throw new Error("Reserva cancelada");
+    }
+
+    this.status = "COMPLETED";
   }
 }

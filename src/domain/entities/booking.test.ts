@@ -206,4 +206,48 @@ describe("Booking Entity", () => {
     expect(booking.getStatus()).toBe("CANCELLED");
     expect(booking.getTotalPrice()).toBe(0);
   });
+
+  it("Deve lançar um erro ao tentar cancelar uma reserva que já foi cancelada", () => {
+    const property = new Property(
+      "1",
+      "Casa com 3 quartos",
+      "Casa com 3 quartos, 2 banheiros e 1 vaga na garagem",
+      6,
+      100
+    );
+    const user = new User("1", "John Doe");
+    const dateRange = new DateRange(
+      new Date("2024-12-25"),
+      new Date("2024-12-30")
+    );
+
+    const booking = new Booking("1", property, user, dateRange, 2);
+
+    booking.cancel(new Date("2024-12-20"));
+
+    expect(() => {
+      booking.cancel(new Date("2024-12-20"));
+    }).toThrow("Reserva já cancelada");
+  });
+
+  test("Deve completar a reserva com sucesso", () => {
+    const property = new Property(
+      "1",
+      "Casa com 3 quartos",
+      "Casa com 3 quartos, 2 banheiros e 1 vaga na garagem",
+      6,
+      100
+    );
+    const user = new User("1", "John Doe");
+    const dateRange = new DateRange(
+      new Date("2024-12-25"),
+      new Date("2024-12-30")
+    );
+
+    const booking = new Booking("1", property, user, dateRange, 2);
+
+    booking.complete();
+
+    expect(booking.getStatus()).toBe("COMPLETED");
+  });
 });
