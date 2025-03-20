@@ -83,6 +83,9 @@ export class BookingService {
     if (!booking) {
       throw new Error("Booking not found");
     }
+     if (booking.getStatus() === "COMPLETED") {
+      throw new Error("Booking already completed");
+    }
     booking.cancel(new Date());
     const newBooking = await this.bookingRepository.updateBooking(booking);
     return newBooking;
@@ -90,5 +93,18 @@ export class BookingService {
 
   async deleteBooking(id: string) {
     await this.bookingRepository.deleteBooking(id);
+  }
+
+  async completeBooking(id: string) {
+    const booking = await this.bookingRepository.getBookingById(id);
+    if (!booking) {
+      throw new Error("Booking not found");
+    }
+    if (booking.getStatus() === "COMPLETED") {
+      throw new Error("Booking already completed");
+    }
+    booking.complete();
+    const newBooking = await this.bookingRepository.updateBooking(booking);
+    return newBooking;
   }
 }

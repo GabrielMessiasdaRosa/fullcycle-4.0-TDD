@@ -178,4 +178,31 @@ describe("Booking Service", () => {
       "Reserva já cancelada"
     );
   });
+
+  test("Should not cancel a booking that has already been completed", async () => {
+    const newUser = await userService.addUser({
+      name: "John Doe",
+    });
+    const newProperty = await propertyService.addProperty({
+      title: "Property 1",
+      description: "Description 1",
+      basePricePerNight: 100,
+      maxGuests: 5,
+    });
+
+    const booking: CreateBookingDTO = {
+      guestId: newUser.id,
+      propertyId: newProperty.id,
+      checkInDate: new Date("2021-09-01"),
+      checkOutDate: new Date("2021-09-15"),
+      guestCount: 2,
+    };
+
+    const response = await bookinService.addBooking(booking);
+    await bookinService.completeBooking(response.id);
+
+    await expect(bookinService.cancelBooking(response.id)).rejects.toThrow(
+      "Booking already completed"
+    );
+  });
 });

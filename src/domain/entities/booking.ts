@@ -96,6 +96,9 @@ export class Booking {
     if (this.status === "CANCELLED") {
       throw new Error("Reserva cancelada");
     }
+    if (this.status === "COMPLETED") {
+      throw new Error("Reserva já completada");
+    }
 
     this.status = "COMPLETED";
   }
