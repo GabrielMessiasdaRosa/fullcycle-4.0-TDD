@@ -27,9 +27,6 @@ export class TypeORMUserRepository implements UserRepository {
     const user = await this.userRepository.findOneByOrFail({
       id: id,
     });
-    if (!user) {
-      return null;
-    }
     return user as User;
   }
 
@@ -42,9 +39,6 @@ export class TypeORMUserRepository implements UserRepository {
     const user = await this.userRepository.findOneByOrFail({
       id: id,
     });
-    if (!user) {
-      throw new Error("User not found");
-    }
     await this.userRepository.delete(id);
   }
 }
