@@ -82,4 +82,10 @@ describe("UserService", () => {
     const users = await userService.getUsers();
     expect(users).toHaveLength(0);
   });
+
+  it("Deve retornar um erro ao tentar atualiar um usuário inexistente", async () => {
+    await expect(
+      userService.updateUser({ id: "999", name: "Jane Doe" })
+    ).rejects.toThrow("Usuário não encontrado");
+  });
 });

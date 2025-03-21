@@ -69,6 +69,11 @@ describe("Booking Service", () => {
       "Booking not found"
     );
   });
+  test("should throw a error if not find booking when completing", async () => {
+    await expect(bookinService.completeBooking("1")).rejects.toThrow(
+      "Booking not found"
+    );
+  });
 
   test("Should throw an error when trying to book at the same date", async () => {
     const newUser = await userService.addUser({

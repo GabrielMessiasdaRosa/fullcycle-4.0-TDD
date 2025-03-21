@@ -250,4 +250,27 @@ describe("Booking Entity", () => {
 
     expect(booking.getStatus()).toBe("COMPLETED");
   });
+
+  test("Deve lançar um erro ao tentar completar uma reserva que já foi completada", () => {
+    const property = new Property(
+      "1",
+      "Casa com 3 quartos",
+      "Casa com 3 quartos, 2 banheiros e 1 vaga na garagem",
+      6,
+      100
+    );
+    const user = new User("1", "John Doe");
+    const dateRange = new DateRange(
+      new Date("2024-12-25"),
+      new Date("2024-12-30")
+    );
+
+    const booking = new Booking("1", property, user, dateRange, 2);
+
+    booking.complete();
+
+    expect(() => {
+      booking.complete();
+    }).toThrow("Reserva já completada");
+  });
 });
