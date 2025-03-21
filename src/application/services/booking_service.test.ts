@@ -1,8 +1,8 @@
-import { MockBookingRepository } from "../../infra/mock_booking_repository";
+import { MockBookingRepository } from "../../infra/mock/mock_booking_repository";
+import { MockPropertyRepository } from "../../infra/mock/mock_property_repository";
+import { MockUserRepository } from "../../infra/mock/mock_user_repository";
 import { CreateBookingDTO } from "../dtos/booking/create_booking_dto";
 import { UpdateBookingDTO } from "../dtos/booking/update_booking_dto";
-import { MockPropertyRepository } from "./../../infra/mock_property_repository";
-import { MockUserRepository } from "./../../infra/mock_user_repository";
 import { BookingService } from "./booking_service";
 import { PropertyService } from "./property_service";
 import { UserService } from "./user_service";

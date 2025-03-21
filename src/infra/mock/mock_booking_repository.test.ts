@@ -1,7 +1,7 @@
-import { Booking } from "../domain/entities/booking";
-import { Property } from "../domain/entities/property";
-import { User } from "../domain/entities/user";
-import { DateRange } from "../domain/value_objects/date_range";
+import { Booking } from "../../domain/entities/booking";
+import { Property } from "../../domain/entities/property";
+import { User } from "../../domain/entities/user";
+import { DateRange } from "../../domain/value_objects/date_range";
 import { MockBookingRepository } from "./mock_booking_repository";
 
 describe("Mock Booking Repository", () => {

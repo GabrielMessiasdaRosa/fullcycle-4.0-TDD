@@ -1,5 +1,5 @@
-import { User } from "../domain/entities/user";
-import { UserRepository } from "../domain/repositories/user_repository";
+import { User } from "../../domain/entities/user";
+import { UserRepository } from "../../domain/repositories/user_repository";
 
 export class MockUserRepository implements UserRepository {
   private users: User[] = [];
@@ -30,8 +30,7 @@ export class MockUserRepository implements UserRepository {
     return this.users.find((user) => user.id === data.id) as User;
   }
 
-  async deleteUser(id: string): Promise<User> {
+  async deleteUser(id: string): Promise<void> {
     this.users = this.users.filter((user) => user.id !== id);
-    return this.users.find((user) => user.id === id) as User;
   }
 }

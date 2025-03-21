@@ -1,5 +1,5 @@
+import { MockPropertyRepository } from "../../infra/mock/mock_property_repository";
 import { CreatePropertyDTO } from "../dtos/property/create_property_dto";
-import { MockPropertyRepository } from "./../../infra/mock_property_repository";
 import { PropertyService } from "./property_service";
 
 describe("PropertyService", () => {

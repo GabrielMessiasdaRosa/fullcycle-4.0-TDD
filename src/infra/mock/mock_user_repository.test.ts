@@ -1,4 +1,4 @@
-import { User } from "../domain/entities/user";
+import { User } from "../../domain/entities/user";
 import { MockUserRepository } from "./mock_user_repository";
 
 describe("MockUserRepository", () => {

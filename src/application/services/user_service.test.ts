@@ -1,4 +1,4 @@
-import { MockUserRepository } from "../../infra/mock_user_repository";
+import { MockUserRepository } from "../../infra/mock/mock_user_repository";
 import { CreateUserDTO } from "../dtos/user/create_user_dto";
 import { UserService } from "./user_service";
 describe("UserService", () => {

@@ -35,8 +35,7 @@ export class UserService {
     return newUser;
   }
 
-  async deleteUser({ id }: DeleteUserDTO): Promise<User> {
-    const user = await this.userRepository.deleteUser(id);
-    return user;
+  async deleteUser({ id }: DeleteUserDTO): Promise<void> {
+    await this.userRepository.deleteUser(id);
   }
 }

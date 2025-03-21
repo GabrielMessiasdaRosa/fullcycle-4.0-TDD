@@ -1,4 +1,4 @@
-import { Property } from "../domain/entities/property";
+import { Property } from "../../domain/entities/property";
 import { MockPropertyRepository } from "./mock_property_repository";
 
 describe("Mock Property Repository", () => {
