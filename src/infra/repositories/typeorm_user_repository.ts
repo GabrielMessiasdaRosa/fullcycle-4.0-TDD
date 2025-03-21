@@ -36,9 +36,6 @@ export class TypeORMUserRepository implements UserRepository {
   }
 
   async deleteUser(id: string): Promise<void> {
-    const user = await this.userRepository.findOneByOrFail({
-      id: id,
-    });
     await this.userRepository.delete(id);
   }
 }
