@@ -43,4 +43,14 @@ describe("Mock Booking Repository", () => {
     expect(response).toBe(updatedBooking);
     expect(response.guestCount).toBe(2);
   });
+
+  test("Should throw an error when updating a booking that does not exist", async () => {
+    const booking = {
+      id: "1",
+      guestCount: 2,
+    } as Booking;
+    await expect(repository.updateBooking(booking)).rejects.toThrow(
+      "Booking not found"
+    );
+  });
 });
