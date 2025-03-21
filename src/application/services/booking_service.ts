@@ -66,13 +66,13 @@ export class BookingService {
     }
     const dateRange = new DateRange(booking.checkInDate, booking.checkOutDate);
 
-    const updatedBooking = new Booking(
-      booking.id,
+    const updatedBooking = {
+      id: booking.id,
       property,
-      guest,
+      user: guest,
       dateRange,
-      booking.guestCount
-    );
+      guestCount: booking.guestCount,
+    } as Booking;
 
     const response = await this.bookingRepository.updateBooking(updatedBooking);
     return response;
@@ -83,7 +83,7 @@ export class BookingService {
     if (!booking) {
       throw new Error("Booking not found");
     }
-     if (booking.getStatus() === "COMPLETED") {
+    if (booking.getStatus() === "COMPLETED") {
       throw new Error("Booking already completed");
     }
     booking.cancel(new Date());

@@ -22,9 +22,25 @@ describe("Mock Booking Repository", () => {
     const booking = new Booking("1", property, user, dateRange, 2);
     const response = await repository.addBooking(booking);
     expect(response).toBe(booking);
-  
-  
+
     const bookings = await repository.getBookings();
     expect(bookings).toContain(booking);
+  });
+
+  test("Should update a booking", async () => {
+    const dateRange = new DateRange(
+      new Date("2021-09-01"),
+      new Date("2021-09-15")
+    );
+    const booking = new Booking("1", property, user, dateRange, 3);
+    await repository.addBooking(booking);
+
+    const updatedBooking = {
+      id: "1",
+      guestCount: 2,
+    } as Booking;
+    const response = await repository.updateBooking(updatedBooking);
+    expect(response).toBe(updatedBooking);
+    expect(response.guestCount).toBe(2);
   });
 });

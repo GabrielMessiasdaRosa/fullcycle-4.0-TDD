@@ -17,9 +17,13 @@ export class MockBookingRepository implements BookingRepository {
   }
 
   async updateBooking(booking: Booking): Promise<Booking> {
-    const index = this.bookings.findIndex((b) => b.id === booking.id);
-    this.bookings[index] = booking;
-    return this.bookings[index];
+    for (const [index, bookingItem] of this.bookings.entries()) {
+      if (bookingItem.id === booking.id) {
+        this.bookings[index] = booking;
+        return booking;
+      }
+    }
+    throw new Error("Booking not found");
   }
 
   async deleteBooking(id: string): Promise<void> {

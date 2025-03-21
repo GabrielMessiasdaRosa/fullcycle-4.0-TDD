@@ -1,5 +1,6 @@
 import { MockBookingRepository } from "../../infra/mock_booking_repository";
 import { CreateBookingDTO } from "../dtos/booking/create_booking_dto";
+import { UpdateBookingDTO } from "../dtos/booking/update_booking_dto";
 import { MockPropertyRepository } from "./../../infra/mock_property_repository";
 import { MockUserRepository } from "./../../infra/mock_user_repository";
 import { BookingService } from "./booking_service";
@@ -57,11 +58,10 @@ describe("Booking Service", () => {
     };
 
     const response = await bookinService.addBooking(booking);
-    console.log(response);
 
     const response2 = await bookinService.addBooking(booking2);
-    console.log(response2);
     expect(response).toHaveProperty("id");
+    expect(response2).toHaveProperty("id");
   });
 
   test("should throw a error if not find booking", async () => {
@@ -203,6 +203,226 @@ describe("Booking Service", () => {
 
     await expect(bookinService.cancelBooking(response.id)).rejects.toThrow(
       "Booking already completed"
+    );
+  });
+
+  test("should get all bookings", async () => {
+    const bookings = await bookinService.getBookings();
+    expect(bookings).toBeInstanceOf(Array);
+  });
+
+  test("should delete a booking", async () => {
+    const newUser = await userService.addUser({
+      name: "John Doe",
+    });
+    const newProperty = await propertyService.addProperty({
+      title: "Property 1",
+      description: "Description 1",
+      basePricePerNight: 100,
+      maxGuests: 5,
+    });
+
+    const booking: CreateBookingDTO = {
+      guestId: newUser.id,
+      propertyId: newProperty.id,
+      checkInDate: new Date("2021-09-01"),
+      checkOutDate: new Date("2021-09-15"),
+      guestCount: 2,
+    };
+
+    const response = await bookinService.addBooking(booking);
+    await bookinService.deleteBooking(response.id);
+
+    await expect(bookinService.getBookingById(response.id)).rejects.toThrow(
+      "Booking not found"
+    );
+  });
+
+  test("should return a booking by id", async () => {
+    const newUser = await userService.addUser({
+      name: "John Doe",
+    });
+    const newProperty = await propertyService.addProperty({
+      title: "Property 1",
+      description: "Description 1",
+      basePricePerNight: 100,
+      maxGuests: 5,
+    });
+
+    const booking: CreateBookingDTO = {
+      guestId: newUser.id,
+      propertyId: newProperty.id,
+      checkInDate: new Date("2021-09-01"),
+      checkOutDate: new Date("2021-09-15"),
+      guestCount: 2,
+    };
+
+    const response = await bookinService.addBooking(booking);
+
+    const bookingById = await bookinService.getBookingById(response.id);
+
+    expect(bookingById).toHaveProperty("id");
+  });
+
+  test("should complete a booking", async () => {
+    const newUser = await userService.addUser({
+      name: "John Doe",
+    });
+    const newProperty = await propertyService.addProperty({
+      title: "Property 1",
+      description: "Description 1",
+      basePricePerNight: 100,
+      maxGuests: 5,
+    });
+
+    const booking: CreateBookingDTO = {
+      guestId: newUser.id,
+      propertyId: newProperty.id,
+      checkInDate: new Date("2021-09-01"),
+      checkOutDate: new Date("2021-09-15"),
+      guestCount: 2,
+    };
+
+    const response = await bookinService.addBooking(booking);
+    const completedBooking = await bookinService.completeBooking(response.id);
+
+    expect(completedBooking.status).toBe("COMPLETED");
+  });
+
+  test("should return an updated booking", async () => {
+    const newUser = await userService.addUser({
+      name: "John Doe",
+    });
+    const newUser2 = await userService.addUser({
+      name: "Jane Doe",
+    });
+    const newProperty = await propertyService.addProperty({
+      title: "Property 1",
+      description: "Description 1",
+      basePricePerNight: 200,
+      maxGuests: 5,
+    });
+
+    const booking: CreateBookingDTO = {
+      guestId: newUser.id,
+      propertyId: newProperty.id,
+      checkInDate: new Date("2022-09-01"),
+      checkOutDate: new Date("2022-09-15"),
+      guestCount: 2,
+    };
+
+    const response = await bookinService.addBooking(booking);
+
+    const updatedBooking: UpdateBookingDTO = {
+      id: response.id,
+      guestId: newUser2.id,
+      propertyId: newProperty.id,
+      checkInDate: new Date("2022-09-01"),
+      checkOutDate: new Date("2022-09-15"),
+      guestCount: 3,
+    };
+
+    const updatedResponse = await bookinService.updateBooking(updatedBooking);
+
+    expect(updatedResponse.user.getId()).toBe(newUser2.id);
+
+    expect(updatedResponse.property.id).toBe(newProperty.id);
+
+    expect(updatedResponse.guestCount).toBe(3);
+  });
+
+  test("should throw an error when completing an already completed booking", async () => {
+    const newUser = await userService.addUser({
+      name: "John Doe",
+    });
+    const newProperty = await propertyService.addProperty({
+      title: "Property 1",
+      description: "Description 1",
+      basePricePerNight: 100,
+      maxGuests: 5,
+    });
+
+    const booking: CreateBookingDTO = {
+      guestId: newUser.id,
+      propertyId: newProperty.id,
+      checkInDate: new Date("2021-09-01"),
+      checkOutDate: new Date("2021-09-15"),
+      guestCount: 2,
+    };
+
+    const response = await bookinService.addBooking(booking);
+    await bookinService.completeBooking(response.id);
+
+    await expect(bookinService.completeBooking(response.id)).rejects.toThrow(
+      "Booking already completed"
+    );
+  });
+
+  test("should throw an error when canceling a non-existent booking", async () => {
+    await expect(
+      bookinService.cancelBooking("non-existent-id")
+    ).rejects.toThrow("Booking not found");
+  });
+
+  test("should throw an error when deleting a non-existent booking", async () => {
+    await expect(
+      bookinService.deleteBooking("non-existent-id")
+    ).resolves.toBeUndefined();
+  });
+
+  test("should throw an error when adding a booking with non-existent user or property", async () => {
+    const booking: CreateBookingDTO = {
+      guestId: "non-existent-user",
+      propertyId: "non-existent-property",
+      checkInDate: new Date("2021-09-01"),
+      checkOutDate: new Date("2021-09-15"),
+      guestCount: 2,
+    };
+
+    await expect(bookinService.addBooking(booking)).rejects.toThrow(
+      "User or Property not found"
+    );
+  });
+
+  test("should throw an error when updating a booking with non-existent user or property", async () => {
+    const booking: UpdateBookingDTO = {
+      id: "non-existent-booking",
+      guestId: "non-existent-user",
+      propertyId: "non-existent-property",
+      checkInDate: new Date("2021-09-01"),
+      checkOutDate: new Date("2021-09-15"),
+      guestCount: 2,
+    };
+
+    await expect(bookinService.updateBooking(booking)).rejects.toThrow(
+      "User or Property not found"
+    );
+  });
+
+  test("should delete a booking successfully", async () => {
+    const newUser = await userService.addUser({
+      name: "John Doe",
+    });
+    const newProperty = await propertyService.addProperty({
+      title: "Property 1",
+      description: "Description 1",
+      basePricePerNight: 100,
+      maxGuests: 5,
+    });
+
+    const booking: CreateBookingDTO = {
+      guestId: newUser.id,
+      propertyId: newProperty.id,
+      checkInDate: new Date("2021-09-01"),
+      checkOutDate: new Date("2021-09-15"),
+      guestCount: 2,
+    };
+
+    const response = await bookinService.addBooking(booking);
+    await bookinService.deleteBooking(response.id);
+
+    await expect(bookinService.getBookingById(response.id)).rejects.toThrow(
+      "Booking not found"
     );
   });
 });
