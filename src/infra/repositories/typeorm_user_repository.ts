@@ -30,9 +30,10 @@ export class TypeORMUserRepository implements UserRepository {
     return mappedUser;
   }
 
-  async updateUser(data: { id: string; name: string }): Promise<User> {
-    await this.userRepository.update(data.id, { name: data.name });
-    return new User(data.id, data.name);
+  async updateUser(data: User): Promise<User> {
+    await this.userRepository.update(data.id, { name: data.getName() });
+    const mappedUser = UserMapper.toDomain(data);
+    return mappedUser;
   }
 
   async deleteUser(id: string): Promise<void> {

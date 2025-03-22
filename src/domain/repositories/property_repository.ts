@@ -5,5 +5,5 @@ export interface PropertyRepository {
   getPropertyById(id: string): Promise<Property | null>;
   addProperty(property: Property): Promise<Property>;
   updateProperty(data: { id: string; title: string }): Promise<Property>;
-  deleteProperty(id: string): Promise<Property>;
+  deleteProperty(id: string): Promise<void>;
 }

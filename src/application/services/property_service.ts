@@ -40,7 +40,7 @@ export class PropertyService {
     return updatedProperty;
   }
 
-  async deleteProperty({ id }: DeletePropertyDTO): Promise<Property> {
+  async deleteProperty({ id }: DeletePropertyDTO): Promise<void> {
     const deletedProperty = await this.propertyRepository.deleteProperty(id);
     return deletedProperty;
   }

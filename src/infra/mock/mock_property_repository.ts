@@ -32,8 +32,7 @@ export class MockPropertyRepository implements PropertyRepository {
     ) as Property;
   }
 
-  async deleteProperty(id: string): Promise<Property> {
+  async deleteProperty(id: string): Promise<void> {
     this.properties = this.properties.filter((property) => property.id !== id);
-    return this.properties.find((property) => property.id === id) as Property;
   }
 }
