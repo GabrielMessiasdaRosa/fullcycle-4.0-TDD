@@ -2,6 +2,7 @@ import { Repository } from "typeorm";
 import { User } from "../../domain/entities/user";
 import { UserRepository } from "../../domain/repositories/user_repository";
 import { UserEntity } from "../persistence/entity/user_entity";
+import { UserMapper } from "../persistence/mappers/user_mapper";
 
 export class TypeORMUserRepository implements UserRepository {
   private userRepository: Repository<UserEntity>;
@@ -11,9 +12,7 @@ export class TypeORMUserRepository implements UserRepository {
   }
 
   async addUser(user: User): Promise<User> {
-    const userEntity = new UserEntity();
-    userEntity.id = user.id;
-    userEntity.name = user.name;
+    const userEntity = UserMapper.toPersistence(user);
     await this.userRepository.save(userEntity);
     return user;
   }
@@ -27,7 +26,8 @@ export class TypeORMUserRepository implements UserRepository {
     const user = await this.userRepository.findOneByOrFail({
       id: id,
     });
-    return user as User;
+    const mappedUser = UserMapper.toDomain(user);
+    return mappedUser;
   }
 
   async updateUser(data: { id: string; name: string }): Promise<User> {
