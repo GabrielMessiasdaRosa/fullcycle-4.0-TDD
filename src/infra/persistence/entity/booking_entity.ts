@@ -18,11 +18,9 @@ export class BookingEntity {
   @Column()
   status!: string;
 
-  // uma propriedade pode ter muitas reservas
   @ManyToOne(() => PropertyEntity, (property) => property.bookings)
   property!: Property;
 
-  // uma relaçao de muitos para um
   @ManyToOne(() => UserEntity, (user) => user.bookings)
   user!: User;
 
@@ -32,9 +30,3 @@ export class BookingEntity {
   @Column()
   endDate!: Date;
 }
-
-/*     id: string,
-    property: Property,
-    user: User,
-    dateRange: DateRange,
-    guestCount: number */
