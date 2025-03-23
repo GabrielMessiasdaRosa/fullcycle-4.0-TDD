@@ -1,8 +1,8 @@
 import { Repository } from "typeorm";
-import { Booking } from "../../domain/entities/booking";
 import { BookingRepository } from "../../domain/repositories/booking_repository";
 import { BookingEntity } from "../persistence/entity/booking_entity";
 import { BookingMapper } from "../persistence/mappers/booking_mapper";
+import { Booking } from "./../../domain/entities/booking";
 
 export class TypeormBookingRepository implements BookingRepository {
   private bookingRepository: Repository<BookingEntity>;
@@ -17,15 +17,15 @@ export class TypeormBookingRepository implements BookingRepository {
   }
 
   async getBookingById(id: string): Promise<Booking> {
-    const booking = await this.bookingRepository.findOne({
+    const bookingEntity = await this.bookingRepository.findOne({
       where: { id: id },
       relations: ["property", "user"],
     });
-    if (!booking) {
+    if (!bookingEntity) {
       throw new Error("Booking not found");
     }
-    const mappedBooking = BookingMapper.toDomain(booking);
-    return mappedBooking;
+    const booking = BookingMapper.toDomain(bookingEntity);
+    return booking;
   }
 
   async getBookings(): Promise<Booking[]> {
