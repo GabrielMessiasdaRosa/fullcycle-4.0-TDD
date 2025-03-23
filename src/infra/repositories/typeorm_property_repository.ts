@@ -13,14 +13,18 @@ export class TypeORMPropertyRepository implements PropertyRepository {
 
   async addProperty(property: Property): Promise<Property> {
     const propertyEntity = PropertyMapper.toPersistence(property);
-    await this.propertyRepository.save(propertyEntity, {});
+    await this.propertyRepository.save(propertyEntity);
     return property;
   }
 
   async getPropertyById(id: string): Promise<Property> {
-    const property = await this.propertyRepository.findOneByOrFail({
-      id,
+    const property = await this.propertyRepository.findOne({
+      where: { id },
+      relations: ["bookings"],
     });
+    if (!property) {
+      throw new Error("Property not found");
+    }
     const mappedProperty = PropertyMapper.toDomain(property);
     return mappedProperty;
   }

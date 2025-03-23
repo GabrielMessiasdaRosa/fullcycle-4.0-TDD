@@ -19,7 +19,6 @@ describe("PropertyMapper", () => {
       expect(property.description).toBe("casa grande");
       expect(property.maxGuests).toBe(10);
       expect(property.basePricePerNight).toBe(500);
-      console.log(property);
       expect(property.bookings).toBeTruthy();
     });
   });

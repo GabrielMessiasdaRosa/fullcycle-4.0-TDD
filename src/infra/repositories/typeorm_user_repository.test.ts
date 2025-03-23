@@ -1,6 +1,8 @@
 import "reflect-metadata";
 import { DataSource, Repository } from "typeorm";
 import { User } from "../../domain/entities/user";
+import { BookingEntity } from "../persistence/entity/booking_entity";
+import { PropertyEntity } from "../persistence/entity/property_entity";
 import { UserEntity } from "./../persistence/entity/user_entity";
 import { TypeORMUserRepository } from "./typeorm_user_repository";
 
@@ -14,7 +16,7 @@ describe("TypeOrmUserRepository", () => {
       type: "sqlite",
       database: ":memory:",
       dropSchema: true,
-      entities: [UserEntity],
+      entities: [UserEntity, BookingEntity, PropertyEntity],
       synchronize: true,
       logging: false,
     });
@@ -25,6 +27,7 @@ describe("TypeOrmUserRepository", () => {
   afterAll(async () => {
     await dataSource.destroy();
   });
+
   it("deve salvar um usuário com sucesso no banco de dados", async () => {
     // Arrange
     const user = new User("1", "John Doe");

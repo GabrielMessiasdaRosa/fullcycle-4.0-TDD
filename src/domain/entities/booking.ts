@@ -27,7 +27,7 @@ export class Booking {
     this.dateRange = dateRange;
     this.guestCount = guestCount;
     this.totalPrice = property.calculateTotalPrice(dateRange);
-    property.addBooking(this);
+    this.property.addBooking(this);
   }
   private validateBooking(
     property: Property,

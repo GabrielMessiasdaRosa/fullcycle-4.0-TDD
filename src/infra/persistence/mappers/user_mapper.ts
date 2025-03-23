@@ -3,7 +3,8 @@ import { UserEntity } from "../entity/user_entity";
 
 export class UserMapper {
   static toDomain(entity: UserEntity): User {
-    return new User(entity.id, entity.name);
+    const domain = new User(entity.id, entity.name);
+    return domain;
   }
 
   static toPersistence(domain: User): UserEntity {

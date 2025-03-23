@@ -1,3 +1,6 @@
+import { DateRange } from "../value_objects/date_range";
+import { Booking } from "./booking";
+import { Property } from "./property";
 import { User } from "./user";
 describe("User Entity", () => {
   it("Deve criar uma instancia de user com ID e Nome", () => {
@@ -15,5 +18,17 @@ describe("User Entity", () => {
     expect(() => new User("", "John Doe")).toThrow(
       "O ID do usuário não pode ser vazio"
     );
+  });
+
+  it("Deve trazer todos os bookings do usuário", () => {
+    const user = new User("1", "John Doe");
+    const property = new Property("1", "Casa de Praia", "Casa", 3, 300);
+    const dateRange = new DateRange(
+      new Date("2022-12-12"),
+      new Date("2022-12-13")
+    );
+    const booking = new Booking("1", property, user, dateRange, 2);
+    user.addBooking(booking);
+    expect(user.getBookings()).toEqual([booking]);
   });
 });

@@ -18,14 +18,21 @@ export class TypeORMUserRepository implements UserRepository {
   }
 
   async getUsers(): Promise<User[]> {
-    const users = await this.userRepository.find();
-    return users.map((user) => new User(user.id, user.name));
+    const users = await this.userRepository.find({
+      relations: ["bookings"],
+    });
+    const mappedUsers = users.map((user) => UserMapper.toDomain(user));
+    return mappedUsers;
   }
 
-  async getUserById(id: string): Promise<User | null> {
-    const user = await this.userRepository.findOneByOrFail({
-      id: id,
+  async getUserById(id: string): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ["bookings"],
     });
+    if (!user) {
+      throw new Error("User not found");
+    }
     const mappedUser = UserMapper.toDomain(user);
     return mappedUser;
   }
