@@ -64,4 +64,114 @@ describe("TypeormBookingRepository", () => {
     const addedBooking = await bookingRepository.getBookingById("1");
     expect(addedBooking).toEqual(booking);
   });
+
+  it("Deve retornar um booking pelo id", async () => {
+    const dateRange = new DateRange(
+      new Date("2021-09-01"),
+      new Date("2021-09-05")
+    );
+    const newUser = new User("1", "John Doe");
+    await userRepository.addUser(newUser);
+    const user = await userRepository.getUserById("1");
+
+    const newProperty = new Property(
+      "1",
+      "Casa de praia",
+      "Casa de praia",
+      3,
+      100
+    );
+    await propertyRepository.addProperty(newProperty);
+    const property = await propertyRepository.getPropertyById("1");
+
+    const booking = new Booking("1", property, user, dateRange, 3);
+    await bookingRepository.addBooking(booking);
+    const addedBooking = await bookingRepository.getBookingById("1");
+    expect(addedBooking).toEqual(booking);
+  });
+
+  it("deve atualizar um booking", async () => {
+    const dateRange = new DateRange(
+      new Date("2021-09-01"),
+      new Date("2021-09-05")
+    );
+    const newUser = new User("1", "John Doe");
+    await userRepository.addUser(newUser);
+    const user = await userRepository.getUserById("1");
+
+    const newProperty = new Property(
+      "1",
+      "Casa de praia",
+      "Casa de praia",
+      3,
+      100
+    );
+    await propertyRepository.addProperty(newProperty);
+    const property = await propertyRepository.getPropertyById("1");
+
+    await bookingRepository.addBooking(
+      new Booking("1", property, user, dateRange, 3)
+    );
+    const updatedBooking = {
+      id: "1",
+      dateRange: new DateRange(new Date("2021-09-01"), new Date("2021-09-10")),
+    } as Booking;
+    await bookingRepository.updateBooking(updatedBooking);
+    const bookingEntity = await bookingRepository.getBookingById("1");
+    expect(bookingEntity.dateRange).toEqual(updatedBooking.dateRange);
+    expect(bookingEntity.id).toEqual(updatedBooking.id);
+    expect(bookingEntity.user).toEqual(user);
+    expect(bookingEntity.guestCount).toEqual(3);
+  });
+
+  it("Deve retornar todos os bookings", async () => {
+    const dateRange = new DateRange(
+      new Date("2021-09-01"),
+      new Date("2021-09-05")
+    );
+    const newUser = new User("1", "John Doe");
+    await userRepository.addUser(newUser);
+    const user = await userRepository.getUserById("1");
+
+    const newProperty = new Property(
+      "1",
+      "Casa de praia",
+      "Casa de praia",
+      3,
+      100
+    );
+    await propertyRepository.addProperty(newProperty);
+    const property = await propertyRepository.getPropertyById("1");
+    const booking = new Booking("1", property, user, dateRange, 3);
+    await bookingRepository.addBooking(booking);
+    const bookings = await bookingRepository.getBookings();
+    const bookingEntity = await bookingRepository.getBookingById("1");
+    expect(bookings).toContainEqual(bookingEntity);
+  });
+
+  it("Deve deletar um booking", async () => {
+    const dateRange = new DateRange(
+      new Date("2021-09-01"),
+      new Date("2021-09-05")
+    );
+    const newUser = new User("1", "John Doe");
+    await userRepository.addUser(newUser);
+    const user = await userRepository.getUserById("1");
+
+    const newProperty = new Property(
+      "1",
+      "Casa de praia",
+      "Casa de praia",
+      3,
+      100
+    );
+    await propertyRepository.addProperty(newProperty);
+    const property = await propertyRepository.getPropertyById("1");
+
+    const booking = new Booking("1", property, user, dateRange, 3);
+    await bookingRepository.addBooking(booking);
+    await bookingRepository.deleteBooking("1");
+    const bookings = await bookingRepository.getBookings();
+    expect(bookings).toEqual([]);
+  });
 });

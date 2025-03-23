@@ -75,6 +75,9 @@ export class BookingService {
     } as Booking;
 
     const response = await this.bookingRepository.updateBooking(updatedBooking);
+    if (!response) {
+      throw new Error("Booking not found");
+    }
     return response;
   }
 

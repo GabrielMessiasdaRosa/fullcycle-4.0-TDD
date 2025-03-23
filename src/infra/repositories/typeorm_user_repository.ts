@@ -30,7 +30,7 @@ export class TypeORMUserRepository implements UserRepository {
       where: { id },
       relations: ["bookings"],
     });
-    if (!user) {
+    if (!user?.id) {
       throw new Error("User not found");
     }
     const mappedUser = UserMapper.toDomain(user);

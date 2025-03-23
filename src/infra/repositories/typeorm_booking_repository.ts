@@ -29,17 +29,29 @@ export class TypeormBookingRepository implements BookingRepository {
   }
 
   async getBookings(): Promise<Booking[]> {
-    const bookings = await this.bookingRepository.find();
+    const bookings = await this.bookingRepository.find({
+      relations: ["property", "user"],
+    });
     const mappedBookings = bookings.map((booking) =>
       BookingMapper.toDomain(booking)
     );
     return mappedBookings;
   }
 
-  async updateBooking(booking: Booking): Promise<Booking> {
-    const bookingEntity = BookingMapper.toPersistence(booking);
-    await this.bookingRepository.save(bookingEntity);
-    return booking;
+  async updateBooking(data: Partial<Booking>): Promise<Booking> {
+    if (!data.id) {
+      throw new Error("Booking id is required");
+    }
+    const booking = await this.getBookingById(data.id);
+    if (!booking) {
+      throw new Error("Booking not found");
+    }
+    const updatedBooking = Object.assign({}, booking, data);
+
+    await this.bookingRepository.save(
+      BookingMapper.toPersistence(updatedBooking)
+    );
+    return updatedBooking;
   }
 
   async deleteBooking(id: string): Promise<void> {

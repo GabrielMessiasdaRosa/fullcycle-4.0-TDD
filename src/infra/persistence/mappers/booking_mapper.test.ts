@@ -99,5 +99,62 @@ describe("BookingMapper", () => {
         totalPrice: booking.getTotalPrice(),
       });
     });
+    describe("toPersistence - Error Handling", () => {
+      it("should throw an error if domain.id is missing", () => {
+        const propertyEntity = new PropertyEntity();
+        propertyEntity.id = "1";
+        propertyEntity.title = "Hotel";
+        propertyEntity.description = "Hotel description";
+        propertyEntity.maxGuests = 2;
+        propertyEntity.basePricePerNight = 100;
+
+        const userEntity = new UserEntity();
+        userEntity.id = "1";
+        userEntity.name = "John";
+
+        const dateRange = new DateRange(
+          new Date("2022-01-01"),
+          new Date("2022-01-02")
+        );
+
+        const booking = new Booking(
+          "",
+          PropertyMapper.toDomain(propertyEntity),
+          UserMapper.toDomain(userEntity),
+          dateRange,
+          2
+        );
+
+        expect(() => BookingMapper.toPersistence(booking)).toThrowError(
+          "Booking ID is required"
+        );
+      });
+
+      it("should throw an error if domain.user is missing", () => {
+        const propertyEntity = new PropertyEntity();
+        propertyEntity.id = "1";
+        propertyEntity.title = "Hotel";
+        propertyEntity.description = "Hotel description";
+        propertyEntity.maxGuests = 2;
+        propertyEntity.basePricePerNight = 100;
+
+        const dateRange = new DateRange(
+          new Date("2022-01-01"),
+          new Date("2022-01-02")
+        );
+
+        const booking = new Booking(
+          "1",
+          PropertyMapper.toDomain(propertyEntity),
+          null as any,
+          dateRange,
+          2
+        );
+
+        expect(() => BookingMapper.toPersistence(booking)).toThrowError(
+          "User is required"
+        );
+      });
+    });
   });
 });

@@ -154,7 +154,7 @@ describe("Booking Service", () => {
     const response = await bookinService.addBooking(booking);
     const canceledBooking = await bookinService.cancelBooking(response.id);
 
-    expect(canceledBooking.status).toBe("CANCELLED");
+    expect(canceledBooking?.status).toBe("CANCELLED");
   });
 
   test("Should not cancel a booking that has already been canceled", async () => {
@@ -291,7 +291,7 @@ describe("Booking Service", () => {
     const response = await bookinService.addBooking(booking);
     const completedBooking = await bookinService.completeBooking(response.id);
 
-    expect(completedBooking.status).toBe("COMPLETED");
+    expect(completedBooking?.status).toBe("COMPLETED");
   });
 
   test("should return an updated booking", async () => {
