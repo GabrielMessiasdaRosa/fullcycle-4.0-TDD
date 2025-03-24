@@ -7,8 +7,12 @@ export class MockBookingRepository implements BookingRepository {
     return this.bookings;
   }
 
-  async getBookingById(id: string): Promise<Booking | null> {
-    return this.bookings.find((booking) => booking.id === id) || null;
+  async getBookingById(id: string): Promise<Booking> {
+    const booking = this.bookings.find((booking) => booking.id === id);
+    if (!booking) {
+      throw new Error("Booking not found");
+    }
+    return booking;
   }
 
   async addBooking(booking: Booking): Promise<Booking> {

@@ -15,8 +15,8 @@ export class BookingMapper {
   static toPersistence(domain: Booking): BookingEntity {
     const entity = new BookingEntity();
     entity.id = domain.id;
-    entity.property = domain.property
-    entity.user = domain.user
+    entity.property = domain.property;
+    entity.user = domain.user;
     entity.startDate = domain.dateRange.getStartDate();
     entity.endDate = domain.dateRange.getEndDate();
     entity.guestCount = domain.guestCount;
@@ -39,7 +39,7 @@ export class BookingMapper {
     if (!entity.guestCount) {
       throw new Error("Booking guest count is required");
     }
-    if (!entity.totalPrice) {
+    if (entity.totalPrice < 0) {
       throw new Error("Booking total price is required");
     }
     if (!entity.status) {

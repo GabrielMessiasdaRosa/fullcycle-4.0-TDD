@@ -53,7 +53,6 @@ export class BookingService {
     );
 
     const response = await this.bookingRepository.addBooking(newBooking);
-    console.log("responseresponseresponseresponse", response);
     return response;
   }
 
@@ -91,13 +90,12 @@ export class BookingService {
       throw new Error("Booking already completed");
     }
     booking.cancel(new Date());
-    await this.bookingRepository.updateBooking(booking);
+    const canceledBooking = await this.bookingRepository.updateBooking(booking);
 
-    const newBooking = await this.bookingRepository.getBookingById(id);
-    if (newBooking?.getStatus() !== "CANCELLED") {
+    if (canceledBooking?.status !== "CANCELLED") {
       throw new Error("Booking not cancelled");
     }
-    return newBooking;
+    return canceledBooking;
   }
 
   async deleteBooking(id: string) {

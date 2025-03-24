@@ -47,12 +47,11 @@ export class TypeORMBookingRepository implements BookingRepository {
       throw new Error("Booking not found");
     }
     // o erro esta aqui @audit
-
     const updatedBooking = Object.assign({}, booking, data);
 
-    await this.bookingRepository.save(
-      BookingMapper.toPersistence(updatedBooking)
-    );
+    const updatedBookingEntity = BookingMapper.toPersistence(updatedBooking);
+
+    await this.bookingRepository.save(updatedBookingEntity);
     return updatedBooking;
   }
 

@@ -91,7 +91,9 @@ export class Booking {
 
     const daysBeforeCheckIn = this.dateRange.getDaysUntilCheckIn(currentDate);
     const refundRule = RefundRuleFactory.getRefundRule(daysBeforeCheckIn);
-    this.totalPrice = refundRule.calculateRefund(this.totalPrice);
+    const newTotalPrice = refundRule.calculateRefund(this.totalPrice);
+
+    this.totalPrice = newTotalPrice;
     this.status = "CANCELLED";
   }
 
