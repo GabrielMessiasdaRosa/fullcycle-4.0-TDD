@@ -143,11 +143,14 @@ describe("Booking Service", () => {
       maxGuests: 5,
     });
 
+    const now = new Date();
+    const checkInDate = new Date(now.setDate(now.getDate() + 4));
+    const checkOutDate = new Date(now.setDate(now.getDate() + 14));
     const booking: CreateBookingDTO = {
       guestId: newUser.id,
       propertyId: newProperty.id,
-      checkInDate: new Date("2021-09-01"),
-      checkOutDate: new Date("2021-09-15"),
+      checkInDate: checkInDate,
+      checkOutDate: checkOutDate,
       guestCount: 2,
     };
 
@@ -168,11 +171,14 @@ describe("Booking Service", () => {
       maxGuests: 5,
     });
 
+    const now = new Date();
+    const checkInDate = new Date(now.setDate(now.getDate() + 4));
+    const checkOutDate = new Date(now.setDate(now.getDate() + 14));
     const booking: CreateBookingDTO = {
       guestId: newUser.id,
       propertyId: newProperty.id,
-      checkInDate: new Date("2021-09-01"),
-      checkOutDate: new Date("2021-09-15"),
+      checkInDate: checkInDate,
+      checkOutDate: checkOutDate,
       guestCount: 2,
     };
 

@@ -85,6 +85,9 @@ export class Booking {
     if (this.status === "CANCELLED") {
       throw new Error("Reserva já cancelada");
     }
+    if (currentDate > this.dateRange.getEndDate()) {
+      throw new Error("Data de cancelamento inválida");
+    }
 
     const daysBeforeCheckIn = this.dateRange.getDaysUntilCheckIn(currentDate);
     const refundRule = RefundRuleFactory.getRefundRule(daysBeforeCheckIn);

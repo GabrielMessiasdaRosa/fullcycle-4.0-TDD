@@ -297,3 +297,117 @@ describe("Booking Entity", () => {
     }).toThrow("Reserva cancelada");
   });
 });
+
+it("Deve calcular corretamente o preço total da reserva", () => {
+  const property = new Property(
+    "1",
+    "Casa com 3 quartos",
+    "Casa com 3 quartos, 2 banheiros e 1 vaga na garagem",
+    6,
+    150
+  );
+  const user = new User("1", "John Doe");
+  const dateRange = new DateRange(
+    new Date("2024-12-25"),
+    new Date("2024-12-30")
+  );
+
+  const booking = new Booking("1", property, user, dateRange, 2);
+
+  expect(booking.getTotalPrice()).toBe(750);
+});
+
+it("Deve lançar um erro ao tentar cancelar uma reserva com data de cancelamento inválida", () => {
+  const property = new Property(
+    "1",
+    "Casa com 3 quartos",
+    "Casa com 3 quartos, 2 banheiros e 1 vaga na garagem",
+    6,
+    100
+  );
+  const user = new User("1", "John Doe");
+  const dateRange = new DateRange(
+    new Date("2024-12-25"),
+    new Date("2024-12-30")
+  );
+
+  const booking = new Booking("1", property, user, dateRange, 2);
+
+  expect(() => {
+    booking.cancel(new Date("2024-12-31"));
+  }).toThrow("Data de cancelamento inválida");
+});
+
+it("Deve lançar um erro ao tentar criar uma reserva com um imóvel já reservado para o mesmo período", () => {
+  const property = new Property(
+    "1",
+    "Casa com 3 quartos",
+    "Casa com 3 quartos, 2 banheiros e 1 vaga na garagem",
+    6,
+    100
+  );
+  const user1 = new User("1", "John Doe");
+  const user2 = new User("2", "Jane Doe");
+  const dateRange1 = new DateRange(
+    new Date("2024-12-25"),
+    new Date("2024-12-30")
+  );
+  const dateRange2 = new DateRange(
+    new Date("2024-12-28"),
+    new Date("2024-12-31")
+  );
+
+  new Booking("1", property, user1, dateRange1, 2);
+
+  expect(() => {
+    new Booking("2", property, user2, dateRange2, 2);
+  }).toThrow(
+    "Imóvel indisponível. Já existe uma reserva confirmada para este imóvel neste período"
+  );
+});
+
+it("Deve lançar um erro ao tentar completar uma reserva com status inválido", () => {
+  const property = new Property(
+    "1",
+    "Casa com 3 quartos",
+    "Casa com 3 quartos, 2 banheiros e 1 vaga na garagem",
+    6,
+    100
+  );
+  const user = new User("1", "John Doe");
+  const dateRange = new DateRange(
+    new Date("2024-12-25"),
+    new Date("2024-12-30")
+  );
+
+  const booking = new Booking("1", property, user, dateRange, 2);
+
+  booking.cancel(new Date("2024-12-20"));
+
+  expect(() => {
+    booking.complete();
+  }).toThrow("Reserva cancelada");
+});
+
+it("Deve lançar um erro ao tentar criar uma reserva com um ID duplicado", () => {
+  const property = new Property(
+    "1",
+    "Casa com 3 quartos",
+    "Casa com 3 quartos, 2 banheiros e 1 vaga na garagem",
+    6,
+    100
+  );
+  const user = new User("1", "John Doe");
+  const dateRange = new DateRange(
+    new Date("2024-12-25"),
+    new Date("2024-12-30")
+  );
+
+  new Booking("1", property, user, dateRange, 2);
+
+  expect(() => {
+    new Booking("1", property, user, dateRange, 2);
+  }).toThrow(
+    "Imóvel indisponível. Já existe uma reserva confirmada para este imóvel neste período"
+  );
+});
