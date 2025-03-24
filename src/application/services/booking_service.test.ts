@@ -44,16 +44,16 @@ describe("Booking Service", () => {
     const booking: CreateBookingDTO = {
       guestId: newUser.id,
       propertyId: newProperty.id,
-      checkInDate: new Date("2021-09-01"),
-      checkOutDate: new Date("2021-09-15"),
+      startDate: new Date("2021-09-01"),
+      endDate: new Date("2021-09-15"),
       guestCount: 2,
     };
 
     const booking2: CreateBookingDTO = {
       guestId: newUser.id,
       propertyId: newProperty.id,
-      checkInDate: new Date("2022-09-20"),
-      checkOutDate: new Date("2022-09-25"),
+      startDate: new Date("2022-09-20"),
+      endDate: new Date("2022-09-25"),
       guestCount: 2,
     };
 
@@ -89,16 +89,16 @@ describe("Booking Service", () => {
     const booking: CreateBookingDTO = {
       guestId: newUser.id,
       propertyId: newProperty.id,
-      checkInDate: new Date("2021-09-01"),
-      checkOutDate: new Date("2021-09-15"),
+      startDate: new Date("2021-09-01"),
+      endDate: new Date("2021-09-15"),
       guestCount: 2,
     };
 
     const booking2: CreateBookingDTO = {
       guestId: newUser.id,
       propertyId: newProperty.id,
-      checkInDate: new Date("2021-09-01"),
-      checkOutDate: new Date("2021-09-15"),
+      startDate: new Date("2021-09-01"),
+      endDate: new Date("2021-09-15"),
       guestCount: 2,
     };
 
@@ -122,8 +122,8 @@ describe("Booking Service", () => {
     const booking: CreateBookingDTO = {
       guestId: newUser.id,
       propertyId: newProperty.id,
-      checkInDate: new Date("2021-09-01"),
-      checkOutDate: new Date("2021-09-15"),
+      startDate: new Date("2021-09-01"),
+      endDate: new Date("2021-09-15"),
       guestCount: 0,
     };
 
@@ -144,13 +144,13 @@ describe("Booking Service", () => {
     });
 
     const now = new Date();
-    const checkInDate = new Date(now.setDate(now.getDate() + 4));
-    const checkOutDate = new Date(now.setDate(now.getDate() + 14));
+    const startDate = new Date(now.setDate(now.getDate() + 4));
+    const endDate = new Date(now.setDate(now.getDate() + 14));
     const booking: CreateBookingDTO = {
       guestId: newUser.id,
       propertyId: newProperty.id,
-      checkInDate: checkInDate,
-      checkOutDate: checkOutDate,
+      startDate: startDate,
+      endDate: endDate,
       guestCount: 2,
     };
 
@@ -172,13 +172,13 @@ describe("Booking Service", () => {
     });
 
     const now = new Date();
-    const checkInDate = new Date(now.setDate(now.getDate() + 4));
-    const checkOutDate = new Date(now.setDate(now.getDate() + 14));
+    const startDate = new Date(now.setDate(now.getDate() + 4));
+    const endDate = new Date(now.setDate(now.getDate() + 14));
     const booking: CreateBookingDTO = {
       guestId: newUser.id,
       propertyId: newProperty.id,
-      checkInDate: checkInDate,
-      checkOutDate: checkOutDate,
+      startDate: startDate,
+      endDate: endDate,
       guestCount: 2,
     };
 
@@ -204,8 +204,8 @@ describe("Booking Service", () => {
     const booking: CreateBookingDTO = {
       guestId: newUser.id,
       propertyId: newProperty.id,
-      checkInDate: new Date("2021-09-01"),
-      checkOutDate: new Date("2021-09-15"),
+      startDate: new Date("2021-09-01"),
+      endDate: new Date("2021-09-15"),
       guestCount: 2,
     };
 
@@ -236,8 +236,8 @@ describe("Booking Service", () => {
     const booking: CreateBookingDTO = {
       guestId: newUser.id,
       propertyId: newProperty.id,
-      checkInDate: new Date("2021-09-01"),
-      checkOutDate: new Date("2021-09-15"),
+      startDate: new Date("2021-09-01"),
+      endDate: new Date("2021-09-15"),
       guestCount: 2,
     };
 
@@ -263,8 +263,8 @@ describe("Booking Service", () => {
     const booking: CreateBookingDTO = {
       guestId: newUser.id,
       propertyId: newProperty.id,
-      checkInDate: new Date("2021-09-01"),
-      checkOutDate: new Date("2021-09-15"),
+      startDate: new Date("2021-09-01"),
+      endDate: new Date("2021-09-15"),
       guestCount: 2,
     };
 
@@ -289,8 +289,8 @@ describe("Booking Service", () => {
     const booking: CreateBookingDTO = {
       guestId: newUser.id,
       propertyId: newProperty.id,
-      checkInDate: new Date("2021-09-01"),
-      checkOutDate: new Date("2021-09-15"),
+      startDate: new Date("2021-09-01"),
+      endDate: new Date("2021-09-15"),
       guestCount: 2,
     };
 
@@ -317,8 +317,8 @@ describe("Booking Service", () => {
     const booking: CreateBookingDTO = {
       guestId: newUser.id,
       propertyId: newProperty.id,
-      checkInDate: new Date("2022-09-01"),
-      checkOutDate: new Date("2022-09-15"),
+      startDate: new Date("2022-09-01"),
+      endDate: new Date("2022-09-15"),
       guestCount: 2,
     };
 
@@ -328,8 +328,8 @@ describe("Booking Service", () => {
       id: response.id,
       guestId: newUser2.id,
       propertyId: newProperty.id,
-      checkInDate: new Date("2022-09-01"),
-      checkOutDate: new Date("2022-09-15"),
+      startDate: new Date("2022-09-01"),
+      endDate: new Date("2022-09-15"),
       guestCount: 3,
     };
 
@@ -356,8 +356,8 @@ describe("Booking Service", () => {
     const booking: CreateBookingDTO = {
       guestId: newUser.id,
       propertyId: newProperty.id,
-      checkInDate: new Date("2021-09-01"),
-      checkOutDate: new Date("2021-09-15"),
+      startDate: new Date("2021-09-01"),
+      endDate: new Date("2021-09-15"),
       guestCount: 2,
     };
 
@@ -385,8 +385,8 @@ describe("Booking Service", () => {
     const booking: CreateBookingDTO = {
       guestId: "non-existent-user",
       propertyId: "non-existent-property",
-      checkInDate: new Date("2021-09-01"),
-      checkOutDate: new Date("2021-09-15"),
+      startDate: new Date("2021-09-01"),
+      endDate: new Date("2021-09-15"),
       guestCount: 2,
     };
 
@@ -400,8 +400,8 @@ describe("Booking Service", () => {
       id: "non-existent-booking",
       guestId: "non-existent-user",
       propertyId: "non-existent-property",
-      checkInDate: new Date("2021-09-01"),
-      checkOutDate: new Date("2021-09-15"),
+      startDate: new Date("2021-09-01"),
+      endDate: new Date("2021-09-15"),
       guestCount: 2,
     };
 
@@ -424,8 +424,8 @@ describe("Booking Service", () => {
     const booking: CreateBookingDTO = {
       guestId: newUser.id,
       propertyId: newProperty.id,
-      checkInDate: new Date("2021-09-01"),
-      checkOutDate: new Date("2021-09-15"),
+      startDate: new Date("2021-09-01"),
+      endDate: new Date("2021-09-15"),
       guestCount: 2,
     };
 

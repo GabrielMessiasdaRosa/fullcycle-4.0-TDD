@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
 import { Property } from "../../../domain/entities/property";
 import { User } from "../../../domain/entities/user";
 import { PropertyEntity } from "./property_entity";
@@ -6,7 +6,7 @@ import { UserEntity } from "./user_entity";
 
 @Entity("bookings")
 export class BookingEntity {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryColumn("uuid")
   id!: string;
 
   @Column()

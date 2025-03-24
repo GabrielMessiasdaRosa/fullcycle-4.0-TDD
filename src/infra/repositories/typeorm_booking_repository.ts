@@ -4,7 +4,7 @@ import { BookingEntity } from "../persistence/entity/booking_entity";
 import { BookingMapper } from "../persistence/mappers/booking_mapper";
 import { Booking } from "./../../domain/entities/booking";
 
-export class TypeormBookingRepository implements BookingRepository {
+export class TypeORMBookingRepository implements BookingRepository {
   private bookingRepository: Repository<BookingEntity>;
   constructor(bookingRepository: Repository<BookingEntity>) {
     this.bookingRepository = bookingRepository;
@@ -46,6 +46,8 @@ export class TypeormBookingRepository implements BookingRepository {
     if (!booking) {
       throw new Error("Booking not found");
     }
+    // o erro esta aqui @audit
+
     const updatedBooking = Object.assign({}, booking, data);
 
     await this.bookingRepository.save(

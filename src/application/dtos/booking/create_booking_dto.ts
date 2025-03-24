@@ -1,7 +1,7 @@
 export interface CreateBookingDTO {
   propertyId: string;
   guestId: string;
-  checkInDate: Date;
-  checkOutDate: Date;
+  startDate: Date;
+  endDate: Date;
   guestCount: number;
 }

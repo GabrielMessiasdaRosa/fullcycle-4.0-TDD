@@ -40,9 +40,9 @@ export class BookingService {
     if (!guest || !property) {
       throw new Error("User or Property not found");
     }
-    const id = uuidv4();
+    const dateRange = new DateRange(booking.startDate, booking.endDate);
 
-    const dateRange = new DateRange(booking.checkInDate, booking.checkOutDate);
+    const id = uuidv4();
 
     const newBooking = new Booking(
       id,
@@ -53,6 +53,7 @@ export class BookingService {
     );
 
     const response = await this.bookingRepository.addBooking(newBooking);
+    console.log("responseresponseresponseresponse", response);
     return response;
   }
 
@@ -64,7 +65,7 @@ export class BookingService {
     if (!guest || !property) {
       throw new Error("User or Property not found");
     }
-    const dateRange = new DateRange(booking.checkInDate, booking.checkOutDate);
+    const dateRange = new DateRange(booking.startDate, booking.endDate);
 
     const updatedBooking = {
       id: booking.id,
@@ -81,7 +82,7 @@ export class BookingService {
     return response;
   }
 
-  async cancelBooking(id: string) {
+  async cancelBooking(id: string): Promise<Booking> {
     const booking = await this.bookingRepository.getBookingById(id);
     if (!booking) {
       throw new Error("Booking not found");
@@ -90,7 +91,12 @@ export class BookingService {
       throw new Error("Booking already completed");
     }
     booking.cancel(new Date());
-    const newBooking = await this.bookingRepository.updateBooking(booking);
+    await this.bookingRepository.updateBooking(booking);
+
+    const newBooking = await this.bookingRepository.getBookingById(id);
+    if (newBooking?.getStatus() !== "CANCELLED") {
+      throw new Error("Booking not cancelled");
+    }
     return newBooking;
   }
 

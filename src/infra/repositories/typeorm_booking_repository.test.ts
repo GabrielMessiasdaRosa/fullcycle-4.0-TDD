@@ -6,13 +6,13 @@ import { DateRange } from "../../domain/value_objects/date_range";
 import { BookingEntity } from "./../persistence/entity/booking_entity";
 import { PropertyEntity } from "./../persistence/entity/property_entity";
 import { UserEntity } from "./../persistence/entity/user_entity";
-import { TypeormBookingRepository } from "./typeorm_booking_repository";
+import { TypeORMBookingRepository } from "./typeorm_booking_repository";
 import { TypeORMPropertyRepository } from "./typeorm_property_repository";
 import { TypeORMUserRepository } from "./typeorm_user_repository";
 
 describe("TypeormBookingRepository", () => {
   let dataSource: DataSource;
-  let bookingRepository: TypeormBookingRepository;
+  let bookingRepository: TypeORMBookingRepository;
   let repository: Repository<BookingEntity>;
   let propertyRepository: TypeORMPropertyRepository;
   let repoProperty: Repository<PropertyEntity>;
@@ -29,7 +29,7 @@ describe("TypeormBookingRepository", () => {
     });
     await dataSource.initialize();
     repository = dataSource.getRepository(BookingEntity);
-    bookingRepository = new TypeormBookingRepository(repository);
+    bookingRepository = new TypeORMBookingRepository(repository);
     repoProperty = dataSource.getRepository(PropertyEntity);
     propertyRepository = new TypeORMPropertyRepository(repoProperty);
     repoUser = dataSource.getRepository(UserEntity);
